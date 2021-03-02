@@ -29,7 +29,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -112,7 +111,7 @@
 			<artifactId>netty-codec-dns</artifactId>
 			<version>${netty.version}</version>
 		</dependency>
-		<!--  
+
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
@@ -121,23 +120,23 @@
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-tcnative</artifactId>
-			<classifier>os.detected.classifier</classifier>
+			<version>2.0.36.Final</version>
 		</dependency>
-		<dependency>
-			<groupId>org.conscrypt</groupId>
-			<artifactId>conscrypt-openjdk-uber</artifactId>
-			<classifier>2.5.1</classifier>
-		</dependency>
+		<!-- <dependency> <groupId>org.conscrypt</groupId> <artifactId>conscrypt-openjdk-uber</artifactId> 
+			<classifier>2.5.1</classifier> </dependency> -->
 		<dependency>
 			<groupId>org.eclipse.jetty.npn</groupId>
 			<artifactId>npn-api</artifactId>
+			<version>8.1.2.v20120308</version>
+			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>com.jcraft</groupId>
 			<artifactId>jzlib</artifactId>
-			<scope>runtime</scope>
+			<version>1.1.3</version>
 		</dependency>
--->
+
 		<!-- see https://github.com/netty/netty/issues/874 -->
 		<dependency>
 			<groupId>com.yammer.metrics</groupId>
@@ -174,12 +173,17 @@
 		</dependency>
 
 		<!-- Needed on Java11 and later -->
-		<!-- 
+		<!-- <dependency> <groupId>com.sun.activation</groupId> <artifactId>javax.activation</artifactId> 
+			</dependency> -->
+
 		<dependency>
-			<groupId>com.sun.activation</groupId>
-			<artifactId>javax.activation</artifactId>
+			<groupId>org.junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
 		</dependency>
-		 -->
+
+
 	</dependencies>
 
 	<build>
