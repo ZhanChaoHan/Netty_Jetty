@@ -37,7 +37,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
  * <pre>
  * CorsConfig corsConfig = CorsConfig.withOrigin("http://domain1.com")
  * </pre>
- *
+ * 
  * <h3>Enable loading from the file system</h3>
  * To enable the server to handle an origin specified as 'null', which happens
  * when a web browser loads a file from the local file system use the following:
