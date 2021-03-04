@@ -1,6 +1,7 @@
 package com.jachs.netty.http.server.serverbootstrap;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -24,6 +25,8 @@ public class ServerBootstrapTest {
         sb.childHandler ( new ServerBootstrapInitializer ( ) );
 
         
-        sb.bind ( 8080 ).sync ().channel ();
+        Channel ch=sb.bind ( 8080 ).sync ().channel ();
+        ch.closeFuture().sync();
+        bossGroup.shutdownGracefully ();
     }
 }
