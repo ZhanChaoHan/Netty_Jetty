@@ -22,7 +22,7 @@ public class ServerBootstrapInitializer extends ChannelInitializer<SocketChannel
         ChannelPipeline pipeline = ch.pipeline ();
 
         pipeline.addLast(new HttpServerCodec());
-        pipeline.addLast(new HttpServerExpectContinueHandler());
+//        pipeline.addLast(new HttpServerExpectContinueHandler());
         pipeline.addLast ( new ServerBootstrapHandler () );
         pipeline.addLast ( new CorsHandler(corsConfig) );
     }
