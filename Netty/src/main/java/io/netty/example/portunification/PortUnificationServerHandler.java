@@ -21,7 +21,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.example.factorial.BigIntegerDecoder;
 import io.netty.example.factorial.FactorialServerHandler;
 import io.netty.example.factorial.NumberEncoder;
-import io.netty.example.http.snoop.HttpSnoopServerHandler;
+import io.netty.example.http.snoop.server.HttpSnoopServerHandler;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.compression.ZlibCodecFactory;
 import io.netty.handler.codec.compression.ZlibWrapper;

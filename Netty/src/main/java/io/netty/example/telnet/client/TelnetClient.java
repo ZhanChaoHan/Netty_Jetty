@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package io.netty.example.securechat;
+package io.netty.example.telnet.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -21,7 +21,6 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.example.telnet.client.TelnetClient;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -30,24 +29,30 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 /**
- * Simple SSL chat client modified from {@link TelnetClient}.
+ * Simplistic telnet client.
  */
-public final class SecureChatClient {
+public final class TelnetClient {
 
+    static final boolean SSL = System.getProperty("ssl") != null;
     static final String HOST = System.getProperty("host", "127.0.0.1");
-    static final int PORT = Integer.parseInt(System.getProperty("port", "8992"));
+    static final int PORT = Integer.parseInt(System.getProperty("port", SSL? "8992" : "8023"));
 
     public static void main(String[] args) throws Exception {
         // Configure SSL.
-        final SslContext sslCtx = SslContextBuilder.forClient()
-            .trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+        final SslContext sslCtx;
+        if (SSL) {
+            sslCtx = SslContextBuilder.forClient()
+                .trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+        } else {
+            sslCtx = null;
+        }
 
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
              .channel(NioSocketChannel.class)
-             .handler(new SecureChatClientInitializer(sslCtx));
+             .handler(new TelnetClientInitializer(sslCtx));
 
             // Start the connection attempt.
             Channel ch = b.connect(HOST, PORT).sync().channel();
@@ -77,7 +82,6 @@ public final class SecureChatClient {
                 lastWriteFuture.sync();
             }
         } finally {
-            // The connection is closed automatically on shutdown.
             group.shutdownGracefully();
         }
     }

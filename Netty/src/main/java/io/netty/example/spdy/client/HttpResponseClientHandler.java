@@ -18,7 +18,7 @@ package io.netty.example.spdy.client;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.example.http.snoop.HttpSnoopClientHandler;
+import io.netty.example.http.snoop.client.HttpSnoopClientHandler;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpObject;
