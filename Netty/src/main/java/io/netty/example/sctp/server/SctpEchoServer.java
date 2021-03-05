@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 The Netty Project
+ * Copyright 2012 The Netty Project
  *
  * The Netty Project licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package io.netty.example.sctp.multihoming;
+package io.netty.example.sctp.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -22,30 +22,22 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.sctp.SctpChannel;
-import io.netty.channel.sctp.SctpServerChannel;
 import io.netty.channel.sctp.nio.NioSctpServerChannel;
-import io.netty.example.sctp.server.SctpEchoServerHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.util.internal.SocketUtils;
-
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
 
 /**
- * SCTP Echo Server with multi-homing support.
+ * Echoes back any received data from a SCTP client.
  */
-public final class SctpMultiHomingEchoServer {
+public final class SctpEchoServer {
 
-    private static final String SERVER_PRIMARY_HOST = System.getProperty("host.primary", "127.0.0.1");
-    private static final String SERVER_SECONDARY_HOST = System.getProperty("host.secondary", "127.0.0.2");
-
-    private static final int SERVER_PORT = Integer.parseInt(System.getProperty("port", "8007"));
+    static final int PORT = Integer.parseInt(System.getProperty("port", "8007"));
 
     public static void main(String[] args) throws Exception {
         // Configure the server.
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
+        final SctpEchoServerHandler serverHandler = new SctpEchoServerHandler();
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
@@ -56,25 +48,16 @@ public final class SctpMultiHomingEchoServer {
                  @Override
                  public void initChannel(SctpChannel ch) throws Exception {
                      ch.pipeline().addLast(
-//                             new LoggingHandler(LogLevel.INFO),
-                             new SctpEchoServerHandler());
+                             //new LoggingHandler(LogLevel.INFO),
+                             serverHandler);
                  }
              });
 
-            InetSocketAddress localAddress = SocketUtils.socketAddress(SERVER_PRIMARY_HOST, SERVER_PORT);
-            InetAddress localSecondaryAddress = SocketUtils.addressByName(SERVER_SECONDARY_HOST);
+            // Start the server.
+            ChannelFuture f = b.bind(PORT).sync();
 
-            // Bind the server to primary address.
-            ChannelFuture bindFuture = b.bind(localAddress).sync();
-
-            //Get the underlying sctp channel
-            SctpServerChannel channel = (SctpServerChannel) bindFuture.channel();
-
-            //Bind the secondary address
-            ChannelFuture connectFuture = channel.bindAddress(localSecondaryAddress).sync();
-
-            // Wait until the connection is closed.
-            connectFuture.channel().closeFuture().sync();
+            // Wait until the server socket is closed.
+            f.channel().closeFuture().sync();
         } finally {
             // Shut down all event loops to terminate all threads.
             bossGroup.shutdownGracefully();
