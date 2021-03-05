@@ -31,7 +31,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
 
 /**
- * Echoes back any received data from a client.
+ * 回显从客户端接收到的任何数据.
  */
 public final class EchoServer {
 

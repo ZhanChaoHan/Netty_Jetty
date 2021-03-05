@@ -48,9 +48,9 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public final class DoTClient {
-    private static final String QUERY_DOMAIN = "www.example.com";
+    private static final String QUERY_DOMAIN = "www.baidu.com";
     private static final int DNS_SERVER_PORT = 853;
-    private static final String DNS_SERVER_HOST = "8.8.8.8";
+    private static final String DNS_SERVER_HOST = "255.255.255.0";
 
     private DoTClient() {
     }
@@ -74,7 +74,7 @@ public final class DoTClient {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             final SslContext sslContext = SslContextBuilder.forClient()
-                    .protocols("TLSv1.3", "TLSv1.2")
+                    .protocols("TLSv1.3", "TLSv1.2")//TLS协议版本
                     .build();
 
             Bootstrap b = new Bootstrap();
